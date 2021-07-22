@@ -1,3 +1,6 @@
+Config = {}
+Config.Locale                     = 'fr'
+
 VehicleShop                            = {}
 VehicleShop.DrawDistance               = 100
 VehicleShop.MarkerColor                = {r = 120, g = 120, b = 240}
