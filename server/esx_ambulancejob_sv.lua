@@ -259,11 +259,18 @@ AddEventHandler('esx_ambulancejob:giveItem', function(itemName, amount)
 	end
 end)
 
-ESX.RegisterCommand('revive', 'admin', function(xPlayer, args, showError)
-	args.playerId.triggerEvent('esx_ambulancejob:revive')
-end, true, {help = _U('revive_help'), validate = true, arguments = {
-	{name = 'playerId', help = 'The player id', type = 'player'}
-}})
+TriggerEvent('es:addGroupCommand', 'revive', 'admin', function(source, args, user)
+    if args[1] ~= nil then
+        if GetPlayerName(tonumber(args[1])) ~= nil then
+            print(('esx_ambulancejob: %s used admin revive'):format(GetPlayerIdentifiers(source)[1]))
+            TriggerClientEvent('esx_ambulancejob:revive', tonumber(args[1]))
+        end
+    else
+        TriggerClientEvent('esx_ambulancejob:revive', source)
+    end
+end, function(source, args, user)
+    TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEM', 'Insufficient Permissions.' } })
+end, { help = _U('revive_help'), params = {{ name = 'id' }} })
 
 ESX.RegisterUsableItem('medikit', function(source)
 	if not playersHealing[source] then
